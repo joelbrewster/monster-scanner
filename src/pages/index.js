@@ -66,7 +66,7 @@ const StyledRadar = styled.div`
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background-color: #fff;
+    background-color: #00ff33; /* Same green color */
     animation: ${blipsAnimation} 10s infinite; /* Longer animation duration */
     animation-timing-function: linear;
     animation-delay: 1.4s; /* Delay added to start animation after radar beam */
@@ -135,6 +135,7 @@ const IndexPage = () => {
 
   const startScan = () => {
     setScanning(true);
+    setShowMessage(false); // Reset message when starting scan
     setTimeout(() => {
       setScanning(false);
       setShowMessage(true);
@@ -144,7 +145,11 @@ const IndexPage = () => {
   return (
     <main style={pageStyles}>
       {showMessage ? (
-        <div>No monsters found, everything is safe</div>
+        <>
+          <div>No monsters found, everything is safe</div>
+          <button onClick={startScan}>Scan again</button>{" "}
+          {/* Button to redo scan */}
+        </>
       ) : (
         <>
           <button onClick={startScan}>Monster scanner</button>
