@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 
+// Styles
 const pageStyles = {
   textAlign: "center",
   padding: 96,
   fontFamily: "-apple-system, Roboto, sans-serif, serif",
-  backgroundColor: "#111", // Dark background color
-  color: "#00ff33", // Green text color
-  margin: 0, // Remove default margin
-  minHeight: "100vh", // Minimum height of 100% viewport height
+  backgroundColor: "#111",
+  color: "#00ff33",
+  margin: 0,
+  minHeight: "100vh",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
   width: "100vw",
-  fontSize: "120%", // Increase font size by 20%
+  fontSize: "120%",
   padding: "0",
 };
 
@@ -22,6 +23,7 @@ const contentStyle = {
   fontSize: "2rem",
 };
 
+// Keyframes
 const radarBeamAnimation = keyframes`
   0% {
     transform: rotate(0deg);
@@ -43,11 +45,12 @@ const blipsAnimation = keyframes`
   }
 `;
 
+// Styled components
 const StyledButton = styled.button`
-  background-color: #00ff33; /* Green background */
-  color: #000; /* Green text color */
-  border: 0.1rem solid #00ff33; /* Green border */
-  font-size: 120%; /* Increase font size by 20% */
+  background-color: #00ff33;
+  color: #000;
+  border: 0.1rem solid #00ff33;
+  font-size: 120%;
   padding: 8px 16px;
   margin: 40px 8px 8px;
   cursor: pointer;
@@ -55,12 +58,12 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: transparent;
-    color: #00ff33; /* Green on hover */
+    color: #00ff33;
   }
 `;
 
 const StyledRadar = styled.div`
-  margin: auto; /* Center the radar horizontally and vertically */
+  margin: auto;
   background: -webkit-radial-gradient(
       center,
       rgba(0, 255, 51, 0.3) 0%,
@@ -91,44 +94,10 @@ const StyledRadar = styled.div`
   overflow: hidden;
   position: relative;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
-  transition: opacity 5s ease-in-out; /* Adjusted transition duration */
-
-  .blip {
-    content: " ";
-    display: block;
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #00ff33; /* Same green color */
-    animation: ${({ visible }) =>
-      visible
-        ? `${blipsAnimation} 5s linear`
-        : "none"}; /* Adjusted animation */
-    animation-fill-mode: forwards; /* Keep final animation state */
-    transform: translate(0, 0); /* Starting position */
-  }
-
-  &:after {
-    content: " ";
-    display: block;
-    background-image: linear-gradient(
-      44deg,
-      rgba(0, 255, 51, 0) 50%,
-      rgba(0, 255, 51, 1) 100%
-    );
-    width: 50%;
-    height: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    animation: ${radarBeamAnimation} 5s infinite;
-    animation-timing-function: linear;
-    transform-origin: bottom right;
-    border-radius: 100% 0 0 0;
-  }
+  transition: opacity 5s ease-in-out;
 `;
 
+// Components
 const Radar = ({ visible }) => {
   const [blips, setBlips] = useState([]);
 
@@ -136,27 +105,28 @@ const Radar = ({ visible }) => {
     let blipInterval;
     if (visible) {
       blipInterval = setInterval(() => {
-        if (Math.random() < 0.1) {
-          const newBlips = [...blips];
-          newBlips.push({
-            x: Math.random() * 100 + "vw",
-            y: Math.random() * 100 + "vh",
-          });
-          setBlips(newBlips);
+        if (blips.length < 5 && Math.random() < 0.1) {
+          setBlips((prevBlips) => [
+            ...prevBlips,
+            {
+              x: Math.random() * 100 + "vw",
+              y: Math.random() * 100 + "vh",
+            },
+          ]);
         }
-      }, 100);
+      }, 700);
     }
 
     const removeBlipsTimeout = setTimeout(() => {
       clearInterval(blipInterval);
       setBlips([]);
-    }, 1500);
+    }, 1500); // Changed to 1500ms (1.5 seconds) to ensure all blips fade out
 
     return () => {
       clearInterval(blipInterval);
       clearTimeout(removeBlipsTimeout);
     };
-  }, [visible, blips]);
+  }, [visible]);
 
   return (
     <StyledRadar className="radar" visible={visible}>
@@ -174,24 +144,22 @@ const Radar = ({ visible }) => {
 const IndexPage = () => {
   const [scanning, setScanning] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [hideScannerButton, setHideScannerButton] = useState(false);
+
+  const startScan = () => {
+    setScanning(true);
+    setShowMessage(false);
+  };
 
   useEffect(() => {
     let timeout;
     if (scanning) {
       timeout = setTimeout(() => {
+        setScanning(false);
         setShowMessage(true);
-        setHideScannerButton(false);
-      }, 20000); // 20 seconds
+      }, 2000); // Changed to 2000ms (2 seconds) to match the duration of the blips fading out
     }
     return () => clearTimeout(timeout);
   }, [scanning]);
-
-  const startScan = () => {
-    setScanning(true);
-    setShowMessage(false); // Reset message when starting scan
-    setHideScannerButton(true); // Hide scanner button when starting scan
-  };
 
   return (
     <main style={pageStyles}>
@@ -199,13 +167,10 @@ const IndexPage = () => {
         <>
           <div style={contentStyle}>No monsters found, everything is safe</div>
           <StyledButton onClick={startScan}>Scan again</StyledButton>{" "}
-          {/* Button to redo scan */}
         </>
       ) : (
         <>
-          {!hideScannerButton && (
-            <StyledButton onClick={startScan}>Monster scanner</StyledButton>
-          )}
+          <StyledButton onClick={startScan}>Monster scanner</StyledButton>
           {scanning && <Radar visible={scanning} />}
         </>
       )}
