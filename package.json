@@ -12,7 +12,8 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "create-icons": "node src/images/create-icon.js"
   },
   "dependencies": {
     "gatsby": "^5.13.2",
@@ -25,5 +26,8 @@
     "react-dom": "^18.2.0",
     "sass": "^1.71.0",
     "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
   }
 }

@@ -37,7 +37,7 @@ const RadarBase = styled.div`
   border: 0.2rem solid #20ff4d;
   box-shadow: 0 0 2rem rgba(32, 255, 77, 0.3);
   overflow: hidden;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   transition: opacity 0.5s ease-in-out;
 `;
 
@@ -64,8 +64,8 @@ const Blip = styled.div`
     rgba(32, 255, 77, 0) 60%
   );
   border-radius: 50%;
-  left: ${({ x }) => x}%;
-  top: ${({ y }) => y}%;
+  left: ${({ $x }) => $x}%;
+  top: ${({ $y }) => $y}%;
   animation: ${fadeInOut} 24s ease-in-out;
   pointer-events: none;
 `;
@@ -109,9 +109,9 @@ export const Radar = ({ visible }) => {
   }, [isAnimating]);
 
   return (
-    <RadarBase visible={visible}>
+    <RadarBase $visible={visible}>
       <RadarBeam />
-      {blip && <Blip key={blip.id} x={blip.x} y={blip.y} />}
+      {blip && <Blip key={blip.id} $x={blip.x} $y={blip.y} />}
     </RadarBase>
   );
 };
