@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, createGlobalStyle } from "styled-components";
 
 // Styles
 const pageStyles = {
+  position: 'relative',
   textAlign: "center",
-  padding: 96,
+  padding: "2rem",
   fontFamily: "-apple-system, Roboto, sans-serif, serif",
-  backgroundColor: "#111",
   color: "#00ff33",
   margin: 0,
-  minHeight: "100vh",
+  height: "100vh",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
   alignItems: "center",
-  width: "100vw",
-  fontSize: "120%",
-  padding: "0",
+  width: "100%",
+  fontSize: "120%"
 };
 
 const contentStyle = {
@@ -25,22 +23,37 @@ const contentStyle = {
 
 // Keyframes
 const radarBeamAnimation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+   0% {
+     transform: rotate(0deg);
+   }
+   100% {
+     transform: rotate(360deg);
+   }
 `;
 
 const blipsAnimation = keyframes`
-  from {
-    transform: translate(0, 0);
+  14% {
+    background: radial-gradient(2vmin circle at 75% 70%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%);
+  }
+  14.0002% {
+    background: radial-gradient(2vmin circle at 75% 70%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 63% 72%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%);
+  }
+  25% {
+    background: radial-gradient(2vmin circle at 75% 70%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 63% 72%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 56% 86%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%);
+  }
+  26% {
+    background: radial-gradient(2vmin circle at 75% 70%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 63% 72%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 56% 86%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%);
     opacity: 1;
   }
-  to {
-    transform: translate(${() => Math.random() * 100}vw, ${() =>
-  Math.random() * 100}vh);
+  100% {
+    background: radial-gradient(2vmin circle at 75% 70%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 63% 72%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%),
+               radial-gradient(2vmin circle at 56% 86%, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%);
     opacity: 0;
   }
 `;
@@ -63,39 +76,86 @@ const StyledButton = styled.button`
 `;
 
 const StyledRadar = styled.div`
-  margin: auto;
-  background: -webkit-radial-gradient(
-      center,
-      rgba(0, 255, 51, 0.3) 0%,
-      rgba(0, 255, 51, 0) 75%
-    ),
-    -webkit-repeating-radial-gradient(rgba(0, 255, 51, 0) 5.8%, rgba(
-            0,
-            255,
-            51,
-            0
-          )
-          18%, rgba(0, 255, 51, 1) 18.6%, rgba(0, 255, 51, 0) 18.9%),
-    -webkit-linear-gradient(90deg, rgba(0, 255, 51, 0) 49.5%, rgba(
-            0,
-            255,
-            51,
-            1
-          )
-          50%, rgba(0, 255, 51, 1) 50%, rgba(0, 255, 51, 0) 50.2%),
-    -webkit-linear-gradient(0deg, rgba(0, 255, 51, 0) 49.5%, rgba(0, 255, 51, 1)
-          50%, rgba(0, 255, 51, 1) 50%, rgba(0, 255, 51, 0) 50.2%);
+  background:
+    radial-gradient(center, rgba(32, 255, 77, 0.3) 0%, rgba(32, 255, 77, 0) 75%),
+    repeating-radial-gradient(rgba(32, 255, 77, 0) 5.8%, rgba(32, 255, 77, 0) 18%, rgba(32, 255, 77, 1) 18.6%, rgba(32, 255, 77, 0) 18.9%),
+    linear-gradient(90deg, rgba(32, 255, 77, 0) 49.5%, rgba(32, 255, 77, 1) 50%, rgba(32, 255, 77, 1) 50%, rgba(32, 255, 77, 0) 50.2%),
+    linear-gradient(0deg, rgba(32, 255, 77, 0) 49.5%, rgba(32, 255, 77, 1) 50%, rgba(32, 255, 77, 1) 50%, rgba(32, 255, 77, 0) 50.2%);
   width: 75vw;
   height: 75vw;
   max-height: 75vh;
   max-width: 75vh;
-  border-radius: 50%;
-  border: 0.2rem solid #00ff33;
-  overflow: hidden;
   position: relative;
+  // left: 50%;
+  // top: 50%;
+  // transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 0.2rem solid #20ff4d;
+  overflow: hidden;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
-  transition: opacity 5s ease-in-out;
-  animation: ${radarBeamAnimation} 10s linear infinite; // Set animation duration to 10 seconds
+  transition: opacity 0.5s ease-in-out;
+
+  &:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: ${blipsAnimation} 5s infinite linear;
+    animation-delay: 1.4s;
+  }
+
+  &:after {
+    content: ' ';
+    display: block;
+    background-image: linear-gradient(44deg, rgba(32, 255, 77, 0) 50%, rgba(32, 255, 77, 1) 100%);
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: ${radarBeamAnimation} 5s infinite linear;
+    transform-origin: bottom right;
+    border-radius: 100% 0 0 0;
+  }
+`;
+
+const RadarWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+// Add GlobalStyle
+const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+    background-color: #111;
+    font-size: 10px;
+  }
+
+  body {
+    background-image:
+      linear-gradient(0deg, transparent 24%, rgba(32, 255, 77, 0.15) 25%, rgba(32, 255, 77, 0.15) 26%, transparent 27%, transparent 74%, rgba(32, 255, 77, 0.15) 75%, rgba(32, 255, 77, 0.15) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(32, 255, 77, 0.15) 25%, rgba(32, 255, 77, 0.15) 26%, transparent 27%, transparent 74%, rgba(32, 255, 77, 0.15) 75%, rgba(32, 255, 77, 0.15) 76%, transparent 77%, transparent);
+    background-size: 7rem 7rem;
+    background-position: -5.2rem -5.2rem;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    font-size: 1.6rem;
+  }
 `;
 
 // Components
@@ -166,19 +226,26 @@ const IndexPage = () => {
   }, [scanning]);
 
   return (
-    <main style={pageStyles}>
-      {showMessage ? (
-        <>
-          <div style={contentStyle}>No monsters found, everything is safe</div>
-          <StyledButton onClick={startScan}>Scan again</StyledButton>
-        </>
-      ) : (
-        <>
-          {!scanning && <StyledButton onClick={startScan}>Monster scanner</StyledButton>}
-          {scanning && <Radar visible={scanning} />}
-        </>
-      )}
-    </main>
+    <>
+      <GlobalStyle />
+      <main style={pageStyles}>
+        {showMessage ? (
+          <>
+            <div style={contentStyle}><h2>No monsters found, everything is safe</h2></div>
+            <StyledButton onClick={startScan}>Scan again</StyledButton>
+          </>
+        ) : (
+          <>
+            {!scanning && <StyledButton onClick={startScan}>Monster scanner</StyledButton>}
+            {scanning && (
+              <RadarWrapper>
+                <StyledRadar visible={scanning} />
+              </RadarWrapper>
+            )}
+          </>
+        )}
+      </main>
+    </>
   );
 };
 
