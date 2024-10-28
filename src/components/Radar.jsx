@@ -3,12 +3,8 @@ import styled, { keyframes } from "styled-components";
 
 // Animations
 const radarBeamAnimation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 `;
 
 const fadeInOut = keyframes`
@@ -21,7 +17,7 @@ const fadeInOut = keyframes`
   55% { opacity: 0.3; }
   65% { opacity: 0.1; }
   75%, 100% { opacity: 0; }
-`; // Much longer, smoother fade
+`;
 
 // Styled Components
 const RadarBase = styled.div`
@@ -76,9 +72,9 @@ export const Radar = ({ visible }) => {
 
   useEffect(() => {
     const tryCreateBlip = () => {
-      if (isAnimating) return; // Don't create new blip if one is animating
+      if (isAnimating) return;
       
-      if (Math.random() <= 0.03) { // 3% chance to create a blip
+      if (Math.random() <= 0.03) {
         setIsAnimating(true);
         setBlip({
           id: Date.now(),
@@ -86,20 +82,17 @@ export const Radar = ({ visible }) => {
           y: Math.random() * 80 + 10
         });
         
-        // Clear blip after animation completes
         setTimeout(() => {
           setBlip(null);
           setIsAnimating(false);
-        }, 24000); // Match animation duration
+        }, 24000);
       }
     };
 
-    // Initial delay
     const startDelay = setTimeout(() => {
       tryCreateBlip();
     }, Math.random() * 10000);
 
-    // Regular checks
     const interval = setInterval(tryCreateBlip, 30000);
 
     return () => {

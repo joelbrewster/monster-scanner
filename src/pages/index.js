@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { GlobalStyle } from "../styles/GlobalStyles";
 import { StyledButton } from "../components/StyledButton";
 import { RadarWrapper } from "../components/RadarWrapper";
-import { Radar } from "../components/Radar"; // Changed to named import
+import { Radar } from "../components/Radar";
 
 const pageStyles = {
   textAlign: "center",
   padding: 0,
   fontFamily: "-apple-system, Roboto, sans-serif, serif",
   color: "#00ff33",
-  backgroundColor: "#000",
   margin: 0,
   minHeight: "100vh",
   display: "flex",
@@ -37,7 +36,6 @@ const IndexPage = () => {
     let timeout;
     if (scanning) {
       const randomDuration = Math.floor(Math.random() * (12000 - 5000 + 1) + 5000);
-      
       timeout = setTimeout(() => {
         setScanning(false);
         setShowMessage(true);
@@ -76,15 +74,21 @@ export const Head = () => (
   <>
     <title>Monster Scanner</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="description" content="Scan your surroundings for monsters" />
+    <meta name="theme-color" content="#111111" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Monster Scanner" />
-    <meta name="application-name" content="Monster Scanner" />
-    <meta name="description" content="Scan your surroundings for monsters" />
-    <meta name="theme-color" content="#111111" />
     
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/icon-180.png" />
+    {/* Favicons */}
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png" />
+    
+    {/* Apple Touch Icon */}
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    
+    {/* Manifest */}
+    <link rel="manifest" href="/manifest.json" />
   </>
 );
