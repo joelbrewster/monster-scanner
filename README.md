@@ -7,3 +7,6 @@ https://codepen.io/oduska/pen/JEreqV
 
 Icon used from here:
 https://www.pngrepo.com/svg/32597/radar
+
+App can be viewed here to save on mobile/desktop:
+https://monsterscanner.netlify.app
