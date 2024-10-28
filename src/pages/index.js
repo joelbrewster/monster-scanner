@@ -95,6 +95,7 @@ const StyledRadar = styled.div`
   position: relative;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   transition: opacity 5s ease-in-out;
+  animation: ${radarBeamAnimation} 10s linear infinite; // Set animation duration to 10 seconds
 `;
 
 // Components
@@ -120,7 +121,7 @@ const Radar = ({ visible }) => {
     const removeBlipsTimeout = setTimeout(() => {
       clearInterval(blipInterval);
       setBlips([]);
-    }, 1500); // Changed to 1500ms (1.5 seconds) to ensure all blips fade out
+    }, 10000); // Set to 10000ms (10 seconds) to match the animation duration
 
     return () => {
       clearInterval(blipInterval);
@@ -153,10 +154,13 @@ const IndexPage = () => {
   useEffect(() => {
     let timeout;
     if (scanning) {
+      // Generate random duration between 5000ms (5s) and 12000ms (12s)
+      const randomDuration = Math.floor(Math.random() * (12000 - 5000 + 1) + 5000);
+      
       timeout = setTimeout(() => {
         setScanning(false);
         setShowMessage(true);
-      }, 2000); // Changed to 2000ms (2 seconds) to match the duration of the blips fading out
+      }, randomDuration);
     }
     return () => clearTimeout(timeout);
   }, [scanning]);
@@ -166,11 +170,11 @@ const IndexPage = () => {
       {showMessage ? (
         <>
           <div style={contentStyle}>No monsters found, everything is safe</div>
-          <StyledButton onClick={startScan}>Scan again</StyledButton>{" "}
+          <StyledButton onClick={startScan}>Scan again</StyledButton>
         </>
       ) : (
         <>
-          <StyledButton onClick={startScan}>Monster scanner</StyledButton>
+          {!scanning && <StyledButton onClick={startScan}>Monster scanner</StyledButton>}
           {scanning && <Radar visible={scanning} />}
         </>
       )}
