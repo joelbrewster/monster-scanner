@@ -104,7 +104,13 @@ export const Radar = ({ visible }) => {
   return (
     <RadarBase $visible={visible}>
       <RadarBeam />
-      {blip && <Blip key={blip.id} $x={blip.x} $y={blip.y} />}
+      {blip && (
+        <Blip 
+          key={blip.id} 
+          $x={blip.x} 
+          $y={blip.y}
+        />
+      )}
     </RadarBase>
   );
 };
