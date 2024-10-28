@@ -16,6 +16,7 @@ export const GlobalStyle = createGlobalStyle`
       linear-gradient(90deg, transparent 24%, rgba(32, 255, 77, 0.15) 25%, rgba(32, 255, 77, 0.15) 26%, transparent 27%, transparent 74%, rgba(32, 255, 77, 0.15) 75%, rgba(32, 255, 77, 0.15) 76%, transparent 77%, transparent);
     background-size: 7rem 7rem;
     background-position: -5.2rem -5.2rem;
+    background-color: #111111;
     width: 100%;
     height: 100%;
     position: relative;
