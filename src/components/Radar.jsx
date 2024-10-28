@@ -13,8 +13,15 @@ const radarBeamAnimation = keyframes`
 
 const fadeInOut = keyframes`
   0%, 100% { opacity: 0; }
-  25%, 75% { opacity: 1; }
-`;
+  5% { opacity: 0; }
+  15% { opacity: 0.3; }
+  25% { opacity: 0.6; }
+  35% { opacity: 0.8; }
+  45% { opacity: 0.6; }
+  55% { opacity: 0.3; }
+  65% { opacity: 0.1; }
+  75%, 100% { opacity: 0; }
+`; // Much longer, smoother fade
 
 // Styled Components
 const RadarBase = styled.div`
@@ -48,50 +55,63 @@ const RadarBeam = styled.div`
 
 const Blip = styled.div`
   position: absolute;
-  width: 2vmin;
-  height: 2vmin;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 1) 10%, rgba(32, 255, 77, 1) 30%, rgba(255, 255, 255, 0) 100%);
+  width: 2.5vmin;
+  height: 2.5vmin;
+  background: radial-gradient(circle at center, 
+    rgba(255, 255, 255, 0.6) 5%, 
+    rgba(32, 255, 77, 0.6) 20%, 
+    rgba(32, 255, 77, 0.2) 40%,
+    rgba(32, 255, 77, 0) 60%
+  );
   border-radius: 50%;
   left: ${({ x }) => x}%;
   top: ${({ y }) => y}%;
-  animation: ${fadeInOut} 2s ease-in-out infinite;
-  animation-delay: ${({ delay }) => delay}s;
+  animation: ${fadeInOut} 24s ease-in-out;
+  pointer-events: none;
 `;
 
 export const Radar = ({ visible }) => {
-  const [blips, setBlips] = useState([]);
+  const [blip, setBlip] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    const createBlips = () => {
-      const numBlips = Math.floor(Math.random() * 3) + 1; // 1-3 blips
-      return Array.from({ length: numBlips }, () => ({
-        id: Math.random(),
-        x: Math.random() * 80 + 10, // 10-90%
-        y: Math.random() * 80 + 10, // 10-90%
-        delay: Math.random() * 2 // Random delay 0-2s
-      }));
+    const tryCreateBlip = () => {
+      if (isAnimating) return; // Don't create new blip if one is animating
+      
+      if (Math.random() <= 0.03) { // 3% chance to create a blip
+        setIsAnimating(true);
+        setBlip({
+          id: Date.now(),
+          x: Math.random() * 80 + 10,
+          y: Math.random() * 80 + 10
+        });
+        
+        // Clear blip after animation completes
+        setTimeout(() => {
+          setBlip(null);
+          setIsAnimating(false);
+        }, 24000); // Match animation duration
+      }
     };
 
-    const interval = setInterval(() => {
-      setBlips(createBlips());
-    }, 2000);
+    // Initial delay
+    const startDelay = setTimeout(() => {
+      tryCreateBlip();
+    }, Math.random() * 10000);
 
-    setBlips(createBlips()); // Initial blips
+    // Regular checks
+    const interval = setInterval(tryCreateBlip, 30000);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      clearTimeout(startDelay);
+      clearInterval(interval);
+    };
+  }, [isAnimating]);
 
   return (
     <RadarBase visible={visible}>
       <RadarBeam />
-      {blips.map((blip) => (
-        <Blip
-          key={blip.id}
-          x={blip.x}
-          y={blip.y}
-          delay={blip.delay}
-        />
-      ))}
+      {blip && <Blip key={blip.id} x={blip.x} y={blip.y} />}
     </RadarBase>
   );
 };
