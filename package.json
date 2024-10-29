@@ -8,10 +8,10 @@
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
+    "develop": "node --no-deprecation ./node_modules/.bin/gatsby develop",
+    "start": "node --no-deprecation ./node_modules/.bin/gatsby develop",
+    "build": "node --no-deprecation ./node_modules/.bin/gatsby build",
+    "serve": "node --no-deprecation ./node_modules/.bin/gatsby serve",
     "clean": "gatsby clean",
     "create-icons": "node src/images/create-icon.js"
   },
@@ -29,5 +29,8 @@
   },
   "devDependencies": {
     "sharp": "^0.33.5"
+  },
+  "overrides": {
+    "punycode": "2.3.1"
   }
 }
